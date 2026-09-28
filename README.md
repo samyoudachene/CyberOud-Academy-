@@ -1,3 +1,3 @@
 # CyberOud-Academy-
 
-+ SuapBase 
++ SupaBase 
