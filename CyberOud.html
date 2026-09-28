@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CyberOud Academy — Learn CS &amp; Languages, Free</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f5f8; --surface:#ffffff; --surface-2:#eef0f4; --text:#12141c; --muted:#5b6172;
+    --border:#dde1e8; --accent:#5b4bda; --accent-2:#e8a33d; --accent-ink:#ffffff;
+    --radius:10px; --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+    --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+    --head:'Space Grotesk',var(--sans);
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d0f14; --surface:#151822; --surface-2:#1b1f2b; --text:#e9ebf2; --muted:#8b93a7; --border:#262b3a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d0f14; --surface:#151822; --surface-2:#1b1f2b; --text:#e9ebf2; --muted:#8b93a7; --border:#262b3a;
+  }
+  html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px)); scroll-behavior:smooth;}
+  html,body{height:100%;}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.55; -webkit-font-smoothing:antialiased;}
+  img,svg{max-width:100%;}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--head); font-weight:600; line-height:1.15; margin:0;}
+  p{margin:0}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important;}}
+
+  /* nav */
+  header.top{position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding-top:env(safe-area-inset-top,0px);}
+  nav{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 24px; max-width:1080px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:9px; font-family:var(--head); font-weight:700; font-size:1.05rem; white-space:nowrap;}
+  .brand .dot{width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);}
+  .navlinks{display:flex; gap:22px; font-size:.92rem;}
+  .navlinks a{text-decoration:none; color:var(--muted);}
+  .navlinks a:hover{color:var(--text);}
+  .navauth{display:flex; align-items:center; gap:10px;}
+  .navscroll{overflow-x:auto; -ms-overflow-style:none; scrollbar-width:none;}
+  .navscroll::-webkit-scrollbar{display:none;}
+
+  button, .btn{font:inherit; cursor:pointer; border-radius:8px; border:1px solid transparent; padding:9px 16px; font-size:.92rem; font-weight:500;}
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-ghost{background:transparent; color:var(--text); border-color:var(--border);}
+  .btn-ghost:hover{background:var(--surface-2);}
+  .btn-sm{padding:6px 11px; font-size:.82rem;}
+
+  /* hero */
+  .hero{padding:64px 0 48px;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:44px; align-items:center;}
+  @media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(2rem,4.4vw,3rem); letter-spacing:-0.01em; max-width:14ch;}
+  .hero p.lead{color:var(--muted); font-size:1.08rem; max-width:46ch; margin-top:16px;}
+  .hero-cta{display:flex; gap:12px; margin-top:26px; flex-wrap:wrap;}
+  .terminal{background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 50px -25px rgba(0,0,0,.5);}
+  .terminal-bar{display:flex; gap:6px; padding:10px 14px; border-bottom:1px solid var(--border);}
+  .terminal-bar span{width:10px; height:10px; border-radius:50%; background:var(--border);}
+  .terminal pre{margin:0; padding:18px 16px; font-family:var(--mono); font-size:.83rem; color:var(--muted); overflow-x:auto; white-space:pre;}
+  .terminal pre .c1{color:var(--accent-2)} .terminal pre .c2{color:var(--accent)} .terminal pre .c3{color:var(--text)}
+
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:56px;}
+  .stat{background:var(--surface); padding:20px 18px; text-align:left;}
+  .stat b{display:block; font-family:var(--head); font-size:1.6rem;}
+  .stat span{color:var(--muted); font-size:.85rem;}
+
+  section{padding:56px 0;}
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:28px; flex-wrap:wrap;}
+  .section-head h2{font-size:1.6rem;}
+  .section-head p{color:var(--muted); max-width:52ch;}
+
+  /* tracks */
+  .tracks{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px;}
+  .track{background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:8px; padding:20px; display:flex; flex-direction:column; gap:10px;}
+  .track-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .track-tag{font-family:var(--mono); font-size:.72rem; color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, transparent); padding:3px 8px; border-radius:5px;}
+  .track h3{font-size:1.05rem;}
+  .track p.desc{color:var(--muted); font-size:.9rem;}
+  .track .res{display:flex; flex-direction:column; gap:5px; margin-top:2px; font-size:.85rem;}
+  .track .res a{text-decoration:none; color:var(--text); border-bottom:1px solid var(--border);}
+  .track .res a:hover{border-color:var(--accent); color:var(--accent);}
+  .track-foot{margin-top:auto; padding-top:10px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .track-status{font-size:.78rem; color:var(--muted);}
+  .track-status.done{color:var(--accent-2); font-weight:600;}
+
+  /* languages */
+  .langs{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media (max-width:820px){.langs{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.langs{grid-template-columns:1fr;}}
+  .lang{background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:20px;}
+  .lang h3{font-size:1rem; margin-bottom:6px;}
+  .lang p{color:var(--muted); font-size:.87rem; margin-bottom:10px;}
+  .lang a{font-size:.85rem; text-decoration:none; color:var(--accent); border-bottom:1px solid transparent;}
+  .lang a:hover{border-color:var(--accent);}
+  .lang.promo{background:linear-gradient(155deg, color-mix(in srgb, var(--accent) 16%, var(--surface)), var(--surface)); border-color:var(--accent);}
+
+  /* videos */
+  .videos{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+  .vid{background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:20px;}
+  .vid .kicker{font-family:var(--mono); font-size:.72rem; color:var(--accent-2);}
+  .vid h3{font-size:1rem; margin:6px 0 6px;}
+  .vid p{color:var(--muted); font-size:.87rem; margin-bottom:10px;}
+  .vid a{font-size:.85rem; color:var(--accent); text-decoration:none; border-bottom:1px solid transparent;}
+  .vid a:hover{border-color:var(--accent);}
+
+  /* quiz */
+  .quiz-box{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:26px; max-width:560px;}
+  .quiz-top{display:flex; gap:10px; align-items:center; margin-bottom:18px; flex-wrap:wrap;}
+  .quiz-top select{padding:8px 10px; border-radius:7px; border:1px solid var(--border); background:var(--bg); color:var(--text); font:inherit;}
+  .quiz-progress{font-size:.8rem; color:var(--muted); margin-bottom:10px;}
+  .quiz-q{font-size:1.05rem; margin-bottom:16px;}
+  .quiz-opts{display:flex; flex-direction:column; gap:8px;}
+  .quiz-opt{text-align:left; background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 12px;}
+  .quiz-opt:hover{border-color:var(--accent);}
+  .quiz-opt.correct{border-color:#2fbf71; background:color-mix(in srgb, #2fbf71 14%, var(--surface-2));}
+  .quiz-opt.wrong{border-color:#e5484d; background:color-mix(in srgb, #e5484d 14%, var(--surface-2));}
+  .quiz-explain{font-size:.85rem; color:var(--muted); margin-top:12px; min-height:1.2em;}
+  .quiz-foot{margin-top:16px; display:flex; justify-content:flex-end;}
+  .quiz-score{font-size:1.4rem; font-family:var(--head);}
+
+  /* faq */
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-q{width:100%; text-align:left; background:none; border:none; padding:16px 0; display:flex; justify-content:space-between; align-items:center; font-size:.98rem; font-weight:500; color:var(--text);}
+  .faq-q .chev{transition:transform .15s ease; color:var(--muted);}
+  .faq-item.open .faq-q .chev{transform:rotate(180deg);}
+  .faq-a{max-height:0; overflow:hidden; color:var(--muted); font-size:.9rem;}
+  .faq-item.open .faq-a{max-height:200px; padding-bottom:16px;}
+
+  footer{border-top:1px solid var(--border); padding:36px 0; margin-top:20px;}
+  .foot-row{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:.85rem;}
+
+  /* modal */
+  .overlay{position:fixed; inset:0; background:rgba(4,6,10,.6); display:none; align-items:center; justify-content:center; z-index:100; padding:20px;}
+  .overlay.open{display:flex;}
+  .modal{background:var(--surface); border:1px solid var(--border); border-radius:12px; width:100%; max-width:380px; padding:26px;}
+  .modal h2{font-size:1.2rem; margin-bottom:4px;}
+  .modal p.sub{color:var(--muted); font-size:.85rem; margin-bottom:18px;}
+  .tabs{display:flex; gap:4px; background:var(--surface-2); border-radius:8px; padding:3px; margin-bottom:18px;}
+  .tabs button{flex:1; background:transparent; border:none; padding:7px; border-radius:6px; color:var(--muted);}
+  .tabs button.active{background:var(--surface); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.15);}
+  .field{margin-bottom:12px;}
+  .field label{display:block; font-size:.82rem; color:var(--muted); margin-bottom:5px;}
+  .field input{width:100%; padding:9px 11px; border-radius:7px; border:1px solid var(--border); background:var(--bg); color:var(--text); font:inherit;}
+  .modal .btn-primary{width:100%; margin-top:6px; padding:10px;}
+  .modal-err{color:#e5484d; font-size:.8rem; margin-top:8px; min-height:1em;}
+  .modal-close{float:right; background:none; border:none; color:var(--muted); font-size:1.1rem; padding:2px 6px;}
+  .dash-greet{font-size:.9rem; color:var(--muted); margin-bottom:14px;}
+  .dash-greet b{color:var(--text);}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <nav>
+    <div class="brand"><span class="dot"></span>CyberOud Academy</div>
+    <div class="navlinks navscroll">
+      <a href="#tracks">CS tracks</a>
+      <a href="#languages">Languages</a>
+      <a href="#tutorials">Tutorials</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://www.patreon.com/CyberOud">Support</a>
+    </div>
+    <div class="navauth" id="navauth">
+      <button class="btn btn-ghost btn-sm" id="btnSignin">Sign in</button>
+      <button class="btn btn-primary btn-sm" id="btnSignup">Get started</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Learn computer science and languages, entirely for free.</h1>
+        <p class="lead">Eight CS tracks, three language paths, and a curated set of the best free resources on the web — structured like a real curriculum, with nothing behind a paywall.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" id="btnHeroStart">Create free account</button>
+          <a href="#tracks" class="btn btn-ghost">Browse the tracks</a>
+        </div>
+      </div>
+      <div class="terminal" aria-hidden="true">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <pre><span class="c2">$</span> academy --list-tracks
+  <span class="c1">net</span>   Networks
+  <span class="c1">cc</span>    Compilation
+  <span class="c1">os</span>    Operating Systems
+  <span class="c1">ai</span>    Artificial Intelligence
+  <span class="c1">sec</span>   Cybersecurity
+  <span class="c1">algo</span>  Algorithms &amp; Data Structures
+  <span class="c1">db</span>    Databases
+  <span class="c1">web</span>   Web Development
+<span class="c2">$</span> academy start <span class="c3">--track</span> web
+<span class="c3">✓ enrolled — 0 cost, unlimited access</span></pre>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><b>8</b><span>CS tracks, curriculum-style</span></div>
+        <div class="stat"><b>3</b><span>Language paths, incl. any language</span></div>
+        <div class="stat"><b>$0</b><span>Cost, always</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tracks">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Computer science tracks</h2>
+        <p>Everything a CS student actually needs, with free resources hand-picked for each subject.</p>
+      </div>
+      <div class="tracks" id="tracksGrid">
+        <!-- tracks injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <section id="languages">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Languages</h2>
+        <p>Communication skills to go with the technical ones.</p>
+      </div>
+      <div class="langs">
+        <div class="lang">
+          <h3>English</h3>
+          <p>Grammar, vocabulary and listening practice for every level.</p>
+          <a href="https://www.bbc.co.uk/learningenglish" target="_blank" rel="noopener">BBC Learning English ↗</a>
+        </div>
+        <div class="lang">
+          <h3>French</h3>
+          <p>Video lessons and exercises built for non-native speakers.</p>
+          <a href="https://apprendre.tv5monde.com/" target="_blank" rel="noopener">TV5MONDE Apprendre ↗</a>
+        </div>
+        <div class="lang">
+          <h3>Any language</h3>
+          <p>Bite-sized daily practice in dozens of languages.</p>
+          <a href="https://www.duolingo.com/" target="_blank" rel="noopener">Duolingo ↗</a>
+        </div>
+        <div class="lang promo">
+          <h3>Support the creator</h3>
+          <p>Behind this academy is CyberOud — back the work and get more resources.</p>
+          <a href="https://www.patreon.com/CyberOud" target="_blank" rel="noopener">patreon.com/CyberOud ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tutorials">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Video tutorials</h2>
+        <p>Full free courses and channels worth following, one per area.</p>
+      </div>
+      <div class="videos" id="videosGrid"></div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Test yourself</h2>
+        <p>Two quick questions per track — pick one and see how you do.</p>
+      </div>
+      <div class="quiz-box">
+        <div class="quiz-top">
+          <select id="quizTopic"></select>
+          <button class="btn btn-primary btn-sm" id="quizStart">Start</button>
+        </div>
+        <div id="quizBody"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap" style="max-width:720px">
+      <div class="section-head">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div id="faqList"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>CyberOud Academy — free, always.</span>
+    <span><a href="https://www.patreon.com/CyberOud" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:none;">patreon.com/CyberOud</a></span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="authView">
+      <h2>Welcome</h2>
+      <p class="sub">Track your progress across every course.</p>
+      <div class="tabs">
+        <button class="active" id="tabSignin">Sign in</button>
+        <button id="tabSignup">Create account</button>
+      </div>
+      <div class="field"><label for="authName" id="nameLabelWrap" style="display:none">Name</label><input id="authName" style="display:none" placeholder="Name"></div>
+      <div class="field"><label for="authEmail">Email</label><input id="authEmail" type="email" placeholder="you@example.com"></div>
+      <div class="field"><label for="authPass">Password</label><input id="authPass" type="password" placeholder="••••••••"></div>
+      <button class="btn btn-primary" id="authSubmit">Sign in</button>
+      <div class="modal-err" id="authErr"></div>
+    </div>
+    <div id="dashView" style="display:none">
+      <h2>Your dashboard</h2>
+      <p class="dash-greet">Signed in as <b id="dashName"></b></p>
+      <p class="sub" id="dashProgress"></p>
+      <button class="btn btn-ghost" id="btnLogout" style="width:100%">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  "use strict";
+  var TRACKS = [
+    {id:"net", tag:"net", title:"Networks", desc:"How data actually moves: TCP/IP, routing, and the protocols underneath the internet.",
+      links:[["Cisco Networking Academy","https://www.netacad.com/"],["Kurose & Ross companion site","https://gaia.cs.umass.edu/kurose_ross/"],["Professor Messer","https://www.professormesser.com/"]]},
+    {id:"cc", tag:"cc", title:"Compilation", desc:"Lexers, parsers, and code generation — build your own language from scratch.",
+      links:[["Crafting Interpreters (free book)","https://craftinginterpreters.com/"],["LLVM Kaleidoscope tutorial","https://llvm.org/docs/tutorial/"],["Compiler Explorer","https://godbolt.org/"]]},
+    {id:"os", tag:"os", title:"Operating Systems", desc:"Processes, memory, and file systems — what the kernel is doing under your code.",
+      links:[["OSTEP (free book)","https://pages.cs.wisc.edu/~remzi/OSTEP/"],["MIT 6.828","https://pdos.csail.mit.edu/6.828/"],["GeeksforGeeks OS","https://www.geeksforgeeks.org/operating-systems/"]]},
+    {id:"ai", tag:"ai", title:"Artificial Intelligence", desc:"Machine learning foundations through to modern deep learning practice.",
+      links:[["Google ML Crash Course","https://developers.google.com/machine-learning/crash-course"],["fast.ai","https://www.fast.ai/"],["Andrew Ng — Machine Learning","https://www.coursera.org/learn/machine-learning"]]},
+    {id:"sec", tag:"sec", title:"Cybersecurity", desc:"Offense and defense: web vulnerabilities, hands-on labs, and secure design.",
+      links:[["TryHackMe","https://tryhackme.com/"],["OWASP","https://owasp.org/"],["PortSwigger Web Security Academy","https://portswigger.net/web-security"]]},
+    {id:"algo", tag:"algo", title:"Algorithms & Data Structures", desc:"The core toolkit for interviews and for writing efficient software.",
+      links:[["VisuAlgo","https://visualgo.net/"],["LeetCode","https://leetcode.com/"],["GeeksforGeeks DSA","https://www.geeksforgeeks.org/data-structures/"]]},
+    {id:"db", tag:"db", title:"Databases", desc:"Relational modeling, SQL, and how real-world data systems are designed.",
+      links:[["SQLZoo","https://sqlzoo.net/"],["PostgreSQL Tutorial","https://www.postgresqltutorial.com/"],["W3Schools SQL","https://www.w3schools.com/sql/"]]},
+    {id:"web", tag:"web", title:"Web Development", desc:"From HTML basics to full apps — the tools and skills to ship on the web.",
+      links:[["MDN Web Docs","https://developer.mozilla.org/"],["freeCodeCamp","https://www.freecodecamp.org/"],["The Odin Project","https://www.theodinproject.com/"]]}
+  ];
+
+  
+  var SUPABASE_URL = "https://qnhlqxanuypdlitupxfa.supabase.co";
+  var SUPABASE_ANON_KEY = "sb_publishable_RnUSsW51aZsGmJ1MMAK-bw_RRE61ECL";
+
+  // ===============================================
+  var sb = (SUPABASE_URL.indexOf("https://") === 0 && SUPABASE_ANON_KEY.length > 20 && window.supabase)
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+  var user = null, progress = {};
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function uname(u){ return (u.user_metadata && u.user_metadata.name) || (u.email || "").split("@")[0]; }
+
+  var grid = document.getElementById("tracksGrid");
+  TRACKS.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "track";
+    var linksHtml = t.links.map(function(l){ return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+' ↗</a>'; }).join("");
+    el.innerHTML =
+      '<div class="track-top"><span class="track-tag">'+t.tag+'</span></div>'+
+      '<h3>'+t.title+'</h3><p class="desc">'+t.desc+'</p><div class="res">'+linksHtml+'</div>'+
+      '<div class="track-foot"><span class="track-status" data-status="'+t.id+'">Not started</span>'+
+      '<button class="btn btn-ghost btn-sm" data-toggle="'+t.id+'">Mark started</button></div>';
+    grid.appendChild(el);
+  });
+
+  var overlay = document.getElementById("overlay"), authView = document.getElementById("authView"),
+      dashView = document.getElementById("dashView"), authErr = document.getElementById("authErr"),
+      tabSignin = document.getElementById("tabSignin"), tabSignup = document.getElementById("tabSignup"),
+      authName = document.getElementById("authName"), authEmail = document.getElementById("authEmail"),
+      authPass = document.getElementById("authPass"), authSubmit = document.getElementById("authSubmit"),
+      mode = "signin";
+
+  function msg(text, ok){ authErr.style.color = ok ? "var(--accent-2)" : "#e5484d"; authErr.textContent = text; }
+  function openModal(m){ mode = m || "signin"; if(user){ showDash(); } else { showAuth(); } overlay.classList.add("open"); }
+  function closeModal(){ overlay.classList.remove("open"); }
+  function showAuth(){
+    dashView.style.display = "none"; authView.style.display = "block";
+    var su = mode === "signup";
+    tabSignin.classList.toggle("active", !su); tabSignup.classList.toggle("active", su);
+    authName.style.display = su ? "block" : "none";
+    authSubmit.textContent = su ? "Create account" : "Sign in";
+    msg(sb ? "" : "Backend not configured yet: add your Supabase keys in index.html.", false);
+  }
+  function showDash(){
+    authView.style.display = "none"; dashView.style.display = "block";
+    document.getElementById("dashName").textContent = user ? uname(user) : "";
+    var done = Object.keys(progress).filter(function(k){ return progress[k]; }).length;
+    document.getElementById("dashProgress").textContent = done + " of " + TRACKS.length + " tracks marked started.";
+  }
+  function refreshTrackUI(){
+    TRACKS.forEach(function(t){
+      var s = document.querySelector('[data-status="'+t.id+'"]'), on = !!progress[t.id];
+      s.textContent = on ? "Started ✓" : "Not started"; s.classList.toggle("done", on);
+    });
+  }
+  function updateNav(){
+    var navauth = document.getElementById("navauth");
+    if(user){
+      navauth.innerHTML = '<span style="font-size:.85rem;color:var(--muted)">Hi, '+esc(uname(user))+'</span><button class="btn btn-ghost btn-sm" id="btnAccount">Account</button>';
+      document.getElementById("btnAccount").onclick = function(){ openModal("signin"); };
+    } else {
+      navauth.innerHTML = '<button class="btn btn-ghost btn-sm" id="btnSignin">Sign in</button><button class="btn btn-primary btn-sm" id="btnSignup">Get started</button>';
+      document.getElementById("btnSignin").onclick = function(){ openModal("signin"); };
+      document.getElementById("btnSignup").onclick = function(){ openModal("signup"); };
+    }
+  }
+  async function setUser(u){
+    user = u; progress = {};
+    if(u && sb){
+      var r = await sb.from("progress").select("track_id,started");
+      if(!r.error){ (r.data || []).forEach(function(x){ progress[x.track_id] = x.started; }); }
+    }
+    updateNav(); refreshTrackUI();
+    if(overlay.classList.contains("open") && user) showDash();
+  }
+
+  document.getElementById("modalClose").onclick = closeModal;
+  overlay.addEventListener("click", function(e){ if(e.target === overlay) closeModal(); });
+  tabSignin.onclick = function(){ mode = "signin"; showAuth(); };
+  tabSignup.onclick = function(){ mode = "signup"; showAuth(); };
+  document.getElementById("btnSignin").onclick = function(){ openModal("signin"); };
+  document.getElementById("btnSignup").onclick = function(){ openModal("signup"); };
+  document.getElementById("btnHeroStart").onclick = function(){ openModal("signup"); };
+  document.getElementById("btnLogout").onclick = async function(){ if(sb) await sb.auth.signOut(); closeModal(); };
+
+  authSubmit.onclick = async function(){
+    if(!sb){ msg("Backend not configured yet: add your Supabase keys in index.html.", false); return; }
+    var email = authEmail.value.trim().toLowerCase(), pass = authPass.value, name = authName.value.trim();
+    if(!email || !pass){ msg("Enter an email and password.", false); return; }
+    if(pass.length < 6){ msg("Password must be at least 6 characters.", false); return; }
+    authSubmit.disabled = true; msg("", false);
+    try{
+      var r;
+      if(mode === "signup"){
+        r = await sb.auth.signUp({email:email, password:pass, options:{data:{name: name || email.split("@")[0]}}});
+        if(!r.error && !r.data.session){ msg("Account created. Check your inbox to confirm your email, then sign in.", true); }
+      } else {
+        r = await sb.auth.signInWithPassword({email:email, password:pass});
+      }
+      if(r.error){ msg(r.error.message, false); }
+      else if(r.data.session){ authPass.value = ""; await setUser(r.data.session.user); showDash(); }
+    }catch(err){ msg("Network error. Please try again.", false); }
+    authSubmit.disabled = false;
+  };
+
+  grid.addEventListener("click", async function(e){
+    var btn = e.target.closest("[data-toggle]");
+    if(!btn) return;
+    if(!user){ openModal("signup"); return; }
+    var id = btn.getAttribute("data-toggle"), on = !progress[id];
+    progress[id] = on; refreshTrackUI();
+    var r = await sb.from("progress").upsert({user_id:user.id, track_id:id, started:on}, {onConflict:"user_id,track_id"});
+    if(r.error){ progress[id] = !on; refreshTrackUI(); alert("Could not save progress: " + r.error.message); }
+  });
+
+  var VIDEOS = [
+    {tag:"General CS", title:"CS50 — Harvard's Intro to CS", desc:"The classic free full course covering the fundamentals of computer science.", url:"https://cs50.harvard.edu/x/"},
+    {tag:"Web / Databases", title:"freeCodeCamp.org", desc:"Full-length free courses on web development, Python, and databases.", url:"https://www.youtube.com/@freecodecamp"},
+    {tag:"Networks / Security", title:"NetworkChuck", desc:"Practical, hands-on tutorials on networking and cybersecurity.", url:"https://www.youtube.com/@NetworkChuck"},
+    {tag:"Web Development", title:"Fireship", desc:"Fast, high-signal explainers on web tools and frameworks.", url:"https://www.youtube.com/@Fireship"},
+    {tag:"Algorithms / AI", title:"3Blue1Brown", desc:"Visual, intuitive explanations of the math behind algorithms and AI.", url:"https://www.youtube.com/@3blue1brown"},
+    {tag:"Compilation / OS", title:"The Cherno", desc:"Deep dives into C++ and how compilers and low-level systems work.", url:"https://www.youtube.com/@TheCherno"}
+  ];
+  var vgrid = document.getElementById("videosGrid");
+  VIDEOS.forEach(function(v){
+    var el = document.createElement("div"); el.className = "vid";
+    el.innerHTML = '<span class="kicker">'+v.tag+'</span><h3>'+v.title+'</h3><p>'+v.desc+'</p><a href="'+v.url+'" target="_blank" rel="noopener">Watch ↗</a>';
+    vgrid.appendChild(el);
+  });
+
+  var QUIZZES = {
+    net:[{q:"Which OSI layer handles routing between networks?", o:["Physical","Data Link","Network","Transport"], c:2, e:"Routing decisions happen at the Network layer (Layer 3), using IP addresses."},
+         {q:"What does DNS primarily do?", o:["Encrypts traffic","Translates domain names to IP addresses","Assigns MAC addresses","Compresses packets"], c:1, e:"DNS resolves human-readable domain names into IP addresses."}],
+    cc:[{q:"What is the first phase of a typical compiler pipeline?", o:["Code generation","Lexical analysis","Optimization","Linking"], c:1, e:"Lexical analysis turns raw source text into tokens first."},
+        {q:"What does a parser produce from a token stream?", o:["Machine code","An abstract syntax tree","A symbol table only","Bytecode"], c:1, e:"Parsing builds an AST that represents the program's structure."}],
+    os:[{q:"What enforces a process's isolated memory space?", o:["The compiler","Virtual memory","The file system","Cache lines"], c:1, e:"Virtual memory maps each process to its own address space."},
+        {q:"What is a deadlock?", o:["A crashed process","Two or more processes waiting on each other forever","A memory leak","A full disk"], c:1, e:"A deadlock is a cycle of processes each waiting on a resource the other holds."}],
+    ai:[{q:"In supervised learning, what does the model learn from?", o:["Unlabeled data only","Labeled input-output pairs","Random noise","Only images"], c:1, e:"Supervised learning maps inputs to known, labeled outputs."},
+        {q:"What is overfitting?", o:["A model that generalizes well","A model that memorizes training data and performs poorly on new data","A model trained too briefly","A dataset with too few features"], c:1, e:"Overfitting means the model fits the training set but fails to generalize."}],
+    sec:[{q:"What does SQL injection exploit?", o:["Weak Wi-Fi passwords","Unsanitized user input in database queries","Slow network speeds","Outdated browsers"], c:1, e:"SQL injection abuses queries built from untrusted, unescaped input."},
+         {q:"What is the main purpose of HTTPS?", o:["Faster page loads","Encrypting data between browser and server","Blocking ads","Compressing images"], c:1, e:"HTTPS encrypts traffic between the client and the server."}],
+    algo:[{q:"Time complexity of binary search on a sorted array?", o:["O(n)","O(log n)","O(n^2)","O(1)"], c:1, e:"Binary search halves the search space each step: O(log n)."},
+          {q:"Which data structure uses LIFO order?", o:["Queue","Stack","Linked list","Hash map"], c:1, e:"A stack's last element in is the first one out."}],
+    db:[{q:"What does SQL's JOIN clause do?", o:["Deletes rows","Combines rows from two or more tables","Creates a new database","Sorts a table"], c:1, e:"JOIN merges related rows across tables using a shared key."},
+        {q:"What is a primary key?", o:["Any column with numbers","A column that uniquely identifies each row","The first column in a table","An encrypted column"], c:1, e:"A primary key guarantees each row can be uniquely identified."}],
+    web:[{q:"What does CSS stand for?", o:["Computer Style Sheets","Cascading Style Sheets","Creative Style System","Colorful Style Sheets"], c:1, e:"CSS: Cascading Style Sheets, for styling markup."},
+         {q:"Which HTTP method retrieves data without side effects?", o:["POST","DELETE","GET","PUT"], c:2, e:"GET requests are meant to be safe and side-effect-free."}]
+  };
+  var quizTopic = document.getElementById("quizTopic"), quizBody = document.getElementById("quizBody");
+  TRACKS.forEach(function(t){ var o = document.createElement("option"); o.value = t.id; o.textContent = t.title; quizTopic.appendChild(o); });
+  var qState = {list:[], idx:0, score:0};
+  function renderQuestion(){
+    var item = qState.list[qState.idx];
+    var html = '<div class="quiz-progress">Question '+(qState.idx+1)+' of '+qState.list.length+'</div>'+
+      '<div class="quiz-q">'+item.q+'</div><div class="quiz-opts">';
+    item.o.forEach(function(opt,i){ html += '<button class="quiz-opt btn" data-i="'+i+'">'+opt+'</button>'; });
+    html += '</div><div class="quiz-explain" id="quizExplain"></div><div class="quiz-foot"><button class="btn btn-ghost btn-sm" id="quizNext" style="display:none">Next</button></div>';
+    quizBody.innerHTML = html;
+    Array.prototype.forEach.call(quizBody.querySelectorAll(".quiz-opt"), function(btn){
+      btn.onclick = function(){
+        if(quizBody.classList.contains("answered")) return;
+        quizBody.classList.add("answered");
+        var i = +btn.getAttribute("data-i");
+        Array.prototype.forEach.call(quizBody.querySelectorAll(".quiz-opt"), function(b,bi){
+          if(bi === item.c) b.classList.add("correct"); else if(bi === i) b.classList.add("wrong");
+        });
+        if(i === item.c) qState.score++;
+        document.getElementById("quizExplain").textContent = item.e;
+        document.getElementById("quizNext").style.display = "inline-block";
+      };
+    });
+    document.getElementById("quizNext").onclick = function(){
+      quizBody.classList.remove("answered");
+      qState.idx++;
+      if(qState.idx < qState.list.length) renderQuestion(); else renderScore();
+    };
+  }
+  function renderScore(){
+    quizBody.innerHTML = '<div class="quiz-score">'+qState.score+' / '+qState.list.length+'</div>'+
+      '<p style="color:var(--muted);margin:8px 0 16px;font-size:.9rem">Nice work — try another track or retake this one.</p>'+
+      '<button class="btn btn-primary btn-sm" id="quizRetake">Retake</button>';
+    if(sb && user){ sb.from("quiz_scores").insert({user_id:user.id, track_id:quizTopic.value, score:qState.score, total:qState.list.length}).then(function(){}); }
+    document.getElementById("quizRetake").onclick = function(){ qState = {list:QUIZZES[quizTopic.value], idx:0, score:0}; renderQuestion(); };
+  }
+  document.getElementById("quizStart").onclick = function(){ qState = {list:QUIZZES[quizTopic.value], idx:0, score:0}; renderQuestion(); };
+
+  var FAQS = [
+    ["Is CyberOud Academy really free?", "Yes — every track, resource link, quiz, and tutorial here is free to use. Supporting the Patreon is optional and simply helps fund new content."],
+    ["Do I need prior experience to start?", "No. Pick any track and start from the first resource — most linked courses assume no background and build up from there."],
+    ["How are the resources chosen?", "Each link is a well-established, actively maintained free resource — documentation, full courses, or interactive practice — picked for quality, never because it's sponsored."],
+    ["Will my progress sync across devices?", "Yes. Create a free account and your progress and quiz scores are saved online, so you can pick up on any device."],
+    ["Can I suggest a resource or a new track?", "Yes — reach out through the Patreon page. Feedback from learners directly shapes what gets added next."]
+  ];
+  var faqList = document.getElementById("faqList");
+  FAQS.forEach(function(f){
+    var el = document.createElement("div"); el.className = "faq-item";
+    el.innerHTML = '<button class="faq-q">'+f[0]+'<span class="chev">⌄</span></button><div class="faq-a">'+f[1]+'</div>';
+    el.querySelector(".faq-q").onclick = function(){ el.classList.toggle("open"); };
+    faqList.appendChild(el);
+  });
+
+  updateNav(); refreshTrackUI();
+  if(sb){ sb.auth.onAuthStateChange(function(ev, session){ setTimeout(function(){ setUser(session ? session.user : null); }, 0); }); }
+})();
+</script>
+</body>
+</html>
